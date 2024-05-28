@@ -1,4 +1,5 @@
 public class PersonBuilder {
+    
     protected String name;
     protected String surname;
     protected int age;
@@ -14,7 +15,7 @@ public class PersonBuilder {
         return this;
     }
 
-    public PersonBuilder setAge(int age) {
+    public PersonBuilder setAge(int age) throws IllegalArgumentException {
         if (age < 0)
             throw new IllegalArgumentException("Некорректный возраст: " + age);
         this.age = age;
@@ -26,7 +27,7 @@ public class PersonBuilder {
         return this;
     }
 
-    public Person build() {
+    public Person build() throws IllegalStateException {
         if (this.name == null || this.surname == null)
             throw new IllegalStateException("Необходимо указать Имя и Фамилию.");
         return new Person(this);
