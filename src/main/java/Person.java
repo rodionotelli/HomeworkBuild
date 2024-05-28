@@ -27,7 +27,8 @@ public class Person {
     }
 
     public boolean hasAge() {
-        return age >= 0;
+        if (getAge().isEmpty()) return false;
+        else return true;
     }
 
     public boolean hasAddress() {
@@ -55,18 +56,21 @@ public class Person {
     }
 
     public void happyBirthday() {
-        age++;
+        if (hasAge()) age++;
     }
 
     public PersonBuilder newChildBuilder() {
-        return new PersonBuilder().setSurname(surname).setAge(0).setAddress(address);
+        PersonBuilder personBuilder = new PersonBuilder();
+        personBuilder.setSurname(this.getSurname());
+        personBuilder.setAddress(this.getAddress());
+        return personBuilder;
     }
 
     @Override
     public String toString() {
-        return name + " " + surname + "(" +
+        return name + " " + surname + "[" +
                 "возраст - " + age + " " +
-                "место жительства - " + address + ")";
+                "место жительства - " + address + "]";
     }
 
     @Override
@@ -80,6 +84,6 @@ public class Person {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname);
+        return Objects.hash(name, surname, age, address);
     }
 }
