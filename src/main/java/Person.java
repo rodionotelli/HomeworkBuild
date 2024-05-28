@@ -1,4 +1,3 @@
-
 import java.util.OptionalInt;
 
 public class Person {
@@ -15,7 +14,7 @@ public class Person {
     }
 
     public boolean hasAge() {
-        return getAge().isPresent();
+        return age >= 0;
     }
 
     public boolean hasAddress() {
@@ -31,8 +30,11 @@ public class Person {
     }
 
     public OptionalInt getAge() {
-        return OptionalInt.of(age);
-    }
+        if (hasAge()) {
+            return OptionalInt.of(age);
+        } else {
+            return OptionalInt.empty()
+        }
 
     public String getAddress() {
         return address;
@@ -51,11 +53,21 @@ public class Person {
         return name + " " + surname + " [возраст - " + getAge().getAsInt()
                 + ", место жительства - " + address + "]";
     }
+   
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + surname.hashCode();
+        result = 31 * result + age;
+        result = 31 * result + address.hashCode();
+        return result;
+    }
+    
 
     public PersonBuilder newChildBuilder() {
         return new PersonBuilder()
                 .setSurname(this.surname)
                 .setAddress(this.address)
-                .setAge(0);
+                .setAge(5);
     }
 }
