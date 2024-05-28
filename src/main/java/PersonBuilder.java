@@ -4,7 +4,7 @@ public class PersonBuilder implements IPersonBuilder {
     private String name;
     private String surname;
     private String address;
-    private int age;
+    private OptionalInt age = OptionalInt.empty();
 
 
     public PersonBuilder setName(String name) throws IllegalArgumentException {
@@ -29,7 +29,7 @@ public class PersonBuilder implements IPersonBuilder {
         if (age < 0) {
             throw new IllegalArgumentException("Возраст не может быть отрицательным");
         } else {
-            this.age = age;
+            this.age = OptionalInt.of(age);
         }
         return this;
     }
@@ -39,18 +39,16 @@ public class PersonBuilder implements IPersonBuilder {
         return this;
     }
 
+    protected Person getPerson() {
+    if (!age.isPresent()) return new Person(name, surname);
+    else return new Person(name, surname, age.getAsInt());
+    }
+
     @Override
-    public Person build() throws IllegalArgumentException {
-        Person person;
-        if (name == null || surname == null) {
-            throw new IllegalArgumentException("поля \"name\" и \"surname\" обязательны для заполнения");
-        }
-        if (age < 0) {
-            person = new Person(name, surname);
-        } else {
-            person = new Person(name, surname, age);
-        } if (address != null) {
-            person.setAddress(address); }
+    public Person build() {
+        if (name == null && surname == null) throw new IllegalStateException("Заполнены не все данные");
+        Person person = getPerson();
+        person.setAddress(address);
         return person;
     }
 }
