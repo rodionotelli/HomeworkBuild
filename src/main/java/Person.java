@@ -35,6 +35,7 @@ public class Person {
         } else {
             return OptionalInt.empty()
         }
+    }
 
     public String getAddress() {
         return address;
